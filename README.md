@@ -1,1 +1,1 @@
-NexFit is a fitness site for fitness purposes
+FitFlow is a fitness site for fitness purposes
