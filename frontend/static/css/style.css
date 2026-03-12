@@ -1,0 +1,100 @@
+/* Shared Styles for Login/Signup Forms */
+* {
+    box-sizing: border-box;
+}
+
+/* Input Field Styles */
+.input-field {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: rgba(17, 24, 39, 0.8);
+    border: 2px solid rgba(147, 51, 234, 0.5);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-field::placeholder {
+    color: rgba(156, 163, 175, 0.7);
+}
+
+.input-field:hover {
+    border-color: rgba(147, 51, 234, 0.8);
+    background-color: rgba(31, 41, 55, 0.9);
+}
+
+.input-field:focus {
+    border-color: #a855f7;
+    background-color: rgba(31, 41, 55, 1);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+}
+
+/* Button Styles */
+.btn {
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+    box-shadow: 0 12px 30px rgba(168, 85, 247, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+/* Form Container */
+.form-container {
+    background-color: rgba(23, 23, 44, 0.6);
+    border: 1px solid rgba(147, 51, 234, 0.4);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Form Labels */
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d1d5db;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Text Utilities */
+.text-subtle {
+    color: #9ca3af;
+}
+
+.text-emphasis {
+    color: #d8b4fe;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.text-emphasis:hover {
+    color: #e9d5ff;
+}
