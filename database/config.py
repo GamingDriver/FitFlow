@@ -1,9 +1,21 @@
 import os
+import sys
+from pathlib import Path
+
+# Add project root to sys.path so imports work from any directory
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # Use SQLite for local development (can switch to PostgreSQL later)
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./signup_app.db")
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_DB_PATH = BASE_DIR / "signup_app.db"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    f"sqlite:///{DEFAULT_DB_PATH.resolve().as_posix()}",
+)
 
 # Base class for models
 Base = declarative_base()

@@ -1,37 +1,43 @@
-from fastapi import FastAPI
-from fastapi import Request
+import os
+import sys
+from pathlib import Path
+
+# Add project root to sys.path so we can import database and backend packages
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse, FileResponse
 from jose import jwt, JWTError
-from database.config import SessionLocal
+
+from database.config import SessionLocal, init_database
 from database.models import User
-import os
+from backend.routes import login, signup
+
+BASE_DIR = PROJECT_ROOT
+FRONTEND_DIR = BASE_DIR / "frontend"
+STATIC_DIR = FRONTEND_DIR / "static"
+TEMPLATE_DIR = FRONTEND_DIR / "templates"
 
 app = FastAPI()
 
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
 ALGORITHM = "HS256"
 
-# Mount static files (CSS, JS, images, etc.)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
-# Import route modules
-from routes import login, signup
 app.include_router(login.router)
 app.include_router(signup.router)
 
-# Create tables at startup.
-from database.config import init_database
 init_database()
 
 @app.get("/")
 async def root():
-    """Home page - redirect to login"""
     return RedirectResponse(url="/login-page")
 
 @app.get("/dashboard")
 async def dashboard(request: Request):
-    """Main dashboard page after login"""
     token = request.cookies.get("access_token")
     if not token:
         return RedirectResponse(url="/login-page", status_code=303)
@@ -60,7 +66,7 @@ async def dashboard(request: Request):
         return response
 
     return FileResponse(
-        "templates/dashboard.html",
+        str(TEMPLATE_DIR / "dashboard.html"),
         media_type="text/html",
         headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"},
     )
@@ -68,10 +74,10 @@ async def dashboard(request: Request):
 
 @app.post("/logout")
 async def logout():
-    """Terminate current session and clear auth cookie."""
     response = RedirectResponse(url="/login-page", status_code=303)
     response.delete_cookie("access_token")
     return response
+
 
 if __name__ == "__main__":
     import uvicorn

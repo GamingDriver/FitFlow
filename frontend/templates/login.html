@@ -25,6 +25,7 @@
               id="email"
               name="email"
               required
+              value="{{ email }}"
               class="input-field"
               placeholder="your@email.com"
             />
@@ -40,6 +41,13 @@
               class="input-field"
               placeholder="••••••••"
             />
+          </div>
+
+          <div
+            id="error-box"
+            class="{% if error %}block{% else %}hidden{% endif %} rounded-lg border border-red-500 bg-red-500/15 text-red-200 px-4 py-3 text-sm font-medium"
+          >
+            {{ error or '' }}
           </div>
 
           <button type="submit" class="btn btn-primary mt-8">Sign In</button>
