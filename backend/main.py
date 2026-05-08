@@ -8,12 +8,10 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse, FileResponse
-from jose import jwt, JWTError
+from fastapi.responses import RedirectResponse
 
 from database.config import SessionLocal, init_database
-from database.models import User
-from backend.routes import login, signup
+from backend.routes import login, signup, dashboard, exercises
 
 BASE_DIR = PROJECT_ROOT
 FRONTEND_DIR = BASE_DIR / "frontend"
@@ -29,48 +27,101 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 app.include_router(login.router)
 app.include_router(signup.router)
+app.include_router(dashboard.router)
+app.include_router(exercises.router)
+
+print("✓ All routers included successfully")
 
 init_database()
+print("✓ Database initialized")
+
+# Seed exercises if not already present
+def seed_exercises():
+    db = SessionLocal()
+    try:
+        from database.models import Exercise
+        
+        if db.query(Exercise).count() == 0:
+            default_exercises = [
+                Exercise(
+                    name="Push-ups",
+                    description="Upper body strength exercise",
+                    target_muscle="Chest, Shoulders, Triceps",
+                    difficulty="beginner",
+                ),
+                Exercise(
+                    name="Squats",
+                    description="Lower body strength exercise",
+                    target_muscle="Quadriceps, Glutes, Hamstrings",
+                    difficulty="beginner",
+                ),
+                Exercise(
+                    name="Pull-ups",
+                    description="Upper body pulling exercise",
+                    target_muscle="Back, Biceps",
+                    difficulty="intermediate",
+                ),
+                Exercise(
+                    name="Deadlifts",
+                    description="Full body strength exercise",
+                    target_muscle="Back, Glutes, Hamstrings",
+                    difficulty="intermediate",
+                ),
+                Exercise(
+                    name="Bench Press",
+                    description="Upper body strength exercise",
+                    target_muscle="Chest, Shoulders, Triceps",
+                    difficulty="intermediate",
+                ),
+                Exercise(
+                    name="Plank",
+                    description="Core stability exercise",
+                    target_muscle="Core, Shoulders",
+                    difficulty="beginner",
+                ),
+                Exercise(
+                    name="Dumbbell Rows",
+                    description="Upper body pulling exercise",
+                    target_muscle="Back, Biceps",
+                    difficulty="intermediate",
+                ),
+                Exercise(
+                    name="Lunges",
+                    description="Lower body strength exercise",
+                    target_muscle="Quadriceps, Glutes, Hamstrings",
+                    difficulty="beginner",
+                ),
+                Exercise(
+                    name="Leg Press",
+                    description="Lower body strength exercise",
+                    target_muscle="Quadriceps, Glutes",
+                    difficulty="intermediate",
+                ),
+                Exercise(
+                    name="Burpees",
+                    description="Full body cardio exercise",
+                    target_muscle="Full Body",
+                    difficulty="intermediate",
+                ),
+            ]
+            db.add_all(default_exercises)
+            db.commit()
+            print("✓ Exercise catalog seeded successfully")
+    except Exception as e:
+        print(f"⚠ Error seeding exercises: {e}")
+    finally:
+        db.close()
+
+
+seed_exercises()
 
 @app.get("/")
 async def root():
     return RedirectResponse(url="/login-page")
 
-@app.get("/dashboard")
-async def dashboard(request: Request):
-    token = request.cookies.get("access_token")
-    if not token:
-        return RedirectResponse(url="/login-page", status_code=303)
-
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id = payload.get("sub")
-        if not user_id:
-            response = RedirectResponse(url="/login-page", status_code=303)
-            response.delete_cookie("access_token")
-            return response
-
-        db = SessionLocal()
-        try:
-            user = db.query(User).filter(User.id == user_id, User.is_active == True).first()
-        finally:
-            db.close()
-
-        if not user:
-            response = RedirectResponse(url="/login-page", status_code=303)
-            response.delete_cookie("access_token")
-            return response
-    except JWTError:
-        response = RedirectResponse(url="/login-page", status_code=303)
-        response.delete_cookie("access_token")
-        return response
-
-    return FileResponse(
-        str(TEMPLATE_DIR / "dashboard.html"),
-        media_type="text/html",
-        headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"},
-    )
-
+@app.get("/api/test")
+async def test_api():
+    return {"status": "ok", "message": "API is working"}
 
 @app.post("/logout")
 async def logout():

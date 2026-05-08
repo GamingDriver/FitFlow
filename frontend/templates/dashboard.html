@@ -3,45 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+    <title>FitFlow Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/static/css/style.css" />
-    <style>
-      .container {
-        max-width: 800px;
-        margin: 50px auto;
-        padding: 20px;
-        text-align: center;
-      }
-      h1 {
-        color: #333;
-      }
-      .welcome-message {
-        font-size: 18px;
-        color: #666;
-        margin: 20px 0;
-      }
-      .logout-btn {
-        background-color: #dc3545;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 20px;
-      }
-      .logout-btn:hover {
-        background-color: #c82333;
-      }
-    </style>
   </head>
-  <body>
-    <div class="container">
-      <h1>Welcome to Dashboard! 🎉</h1>
-      <p class="welcome-message">You have successfully logged in.</p>
-      <form method="POST" action="/logout">
-        <button class="logout-btn" type="submit">Logout</button>
-      </form>
+  <body
+    class="bg-gradient-to-br from-gray-950 via-purple-950 to-gray-950 min-h-screen flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-6xl">
+      <div class="form-container p-10">
+        <div class="flex flex-col lg:flex-row justify-between items-start gap-6 mb-10">
+          <div class="flex-1">
+            <h1 class="text-4xl font-bold text-white mb-2">Welcome back, {{ user.fullname }}</h1>
+            <p class="text-gray-400 text-sm max-w-2xl">
+              Track workouts, build routines, and stay consistent with your fitness goals.
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto lg:justify-end">
+            <!-- <a href="/workouts" class="btn btn-secondary text-center">Workouts</a> 
+            <a href="/build-workout" class="btn btn-primary text-center">Build Workout</a>
+            <a href="/exercises" class="btn btn-secondary text-center">Exercises</a>
+            <a href="/history" class="btn btn-secondary text-center">History</a>
+            <a href="/profile" class="btn btn-secondary text-center">Profile</a>-->
+            <a href="https://www.vim.org" class="btn btn-secondary text-center">Workouts</a>
+            <a href="https://www.vim.org" class="btn btn-primary text-center">Build Workout</a>
+            <a href="https://www.vim.org" class="btn btn-secondary text-center">Exercises</a>
+            <a href="https://www.vim.org" class="btn btn-secondary text-center">History</a>
+            <a href="https://www.vim.org" class="btn btn-secondary text-center">Profile</a>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-2">
+          <div class="dashboard-card">
+            <div class="card-title">My Workouts</div>
+            <p class="card-copy">You have <span class="text-white font-semibold">{{ workout_count }}</span> saved workout{{ 's' if workout_count != 1 else '' }}.</p>
+            <a href="/workouts" class="btn btn-primary mt-6 inline-block w-full text-center">Open Workouts</a>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="card-title">Create Workout</div>
+            <p class="card-copy">Build a new session from exercise templates and save it to your routine.</p>
+            <a href="/create-workout" class="btn btn-primary mt-6 inline-block w-full text-center">Build Routine</a>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="card-title">Training History</div>
+            <p class="card-copy">You completed <span class="text-white font-semibold">{{ completion_count }}</span> session{{ 's' if completion_count != 1 else '' }} so far.</p>
+            <a href="/history" class="btn btn-primary mt-6 inline-block w-full text-center">View History</a>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="card-title">My Exercises</div>
+            <p class="card-copy">You have logged <span class="text-white font-semibold">{{ exercise_count }}</span> exercise record{{ 's' if exercise_count != 1 else '' }}.</p>
+            <a href="/exercises" class="btn btn-primary mt-6 inline-block w-full text-center">View Exercises</a>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="card-title">Profile</div>
+            <p class="card-copy">Manage your account, update your name, and keep your profile up to date.</p>
+            <a href="/profile" class="btn btn-primary mt-6 inline-block w-full text-center">Open Profile</a>
+          </div>
+        </div>
+
+        <div class="mt-10 text-center">
+          <p class="text-gray-400 text-sm mb-6">Need a quick start? Pick a workout or create a new routine now.</p>
+          <form method="POST" action="/logout" class="inline-block w-full sm:w-auto">
+            <button class="btn btn-secondary" type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>

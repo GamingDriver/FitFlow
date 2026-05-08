@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - FitFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body
+    class="bg-gradient-to-br from-gray-950 via-purple-950 to-gray-950 min-h-screen flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-3xl">
+      <div class="form-container p-10">
+        <div class="flex flex-col lg:flex-row justify-between items-start gap-6 mb-10">
+          <div class="flex-1">
+            <h1 class="text-4xl font-bold text-white mb-2">Profile</h1>
+            <p class="text-gray-400 text-sm max-w-2xl">
+              Update your name and review the account details linked to your FitFlow profile.
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto lg:justify-end">
+            <a href="/dashboard" class="btn btn-secondary text-center">Dashboard</a>
+            <a href="/workouts" class="btn btn-primary text-center">Workouts</a>
+            <a href="/history" class="btn btn-secondary text-center">History</a>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-2">
+          <div class="dashboard-card">
+            <div class="card-title">Account Details</div>
+            <div class="card-copy mt-3">
+              <p><span class="font-semibold text-white">Full name:</span> {{ user.fullname }}</p>
+              <p class="mt-2"><span class="font-semibold text-white">Email:</span> {{ user.email }}</p>
+              <p class="mt-2"><span class="font-semibold text-white">Member since:</span> {{ user.created_at.strftime('%b %d, %Y') }}</p>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="card-title">Update Profile</div>
+            <form method="POST" action="/profile" class="space-y-4 mt-4">
+              <div>
+                <label for="fullname">Full Name</label>
+                <input
+                  type="text"
+                  id="fullname"
+                  name="fullname"
+                  required
+                  value="{{ user.fullname }}"
+                  class="input-field"
+                />
+              </div>
+
+              {% if error %}
+              <div class="rounded-lg border border-red-500 bg-red-500/15 text-red-200 px-4 py-3 text-sm font-medium">
+                {{ error }}
+              </div>
+              {% endif %}
+
+              {% if message %}
+              <div class="rounded-lg border border-emerald-400 bg-emerald-500/15 text-emerald-100 px-4 py-3 text-sm font-medium">
+                {{ message }}
+              </div>
+              {% endif %}
+
+              <button type="submit" class="btn btn-primary w-full">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

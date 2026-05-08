@@ -42,6 +42,10 @@
     border: none;
     font-family: inherit;
     font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
 }
 
 .btn-primary {
@@ -97,4 +101,59 @@ label {
 
 .text-emphasis:hover {
     color: #e9d5ff;
+}
+
+/* Dashboard cards and layout */
+.dashboard-panel {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.dashboard-card {
+    background-color: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(147, 51, 234, 0.45);
+    border-radius: 18px;
+    padding: 2rem;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(168, 85, 247, 0.8);
+    background-color: rgba(15, 23, 42, 0.95);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 0.75rem;
+}
+
+.card-copy {
+    color: #c7d2fe;
+    line-height: 1.8;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 160px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e5e7eb;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(168, 85, 247, 0.5);
+    transform: translateY(-1px);
 }

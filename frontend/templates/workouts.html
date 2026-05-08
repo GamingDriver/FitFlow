@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Workouts - FitFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body
+    class="bg-gradient-to-br from-gray-950 via-purple-950 to-gray-950 min-h-screen flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-6xl">
+      <div class="form-container p-10">
+        <div class="flex flex-col lg:flex-row justify-between items-start gap-6 mb-10">
+          <div class="flex-1">
+            <h1 class="text-4xl font-bold text-white mb-2">My Workouts</h1>
+            <p class="text-gray-400 text-sm max-w-2xl">
+              Manage your saved routines and complete workouts to log your progress.
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto lg:justify-end">
+            <a href="/dashboard" class="btn btn-secondary text-center">Dashboard</a>
+            <a href="/create-workout" class="btn btn-primary text-center">Create Workout</a>
+            <a href="/history" class="btn btn-secondary text-center">History</a>
+            <a href="/profile" class="btn btn-secondary text-center">Profile</a>
+          </div>
+        </div>
+
+        {% if workouts %}
+        <div class="grid gap-6">
+          {% for workout in workouts %}
+          <div class="dashboard-card">
+            <div class="flex justify-between items-start gap-4">
+              <div>
+                <h2 class="card-title">{{ workout.title }}</h2>
+                {% if workout.description %}
+                <p class="card-copy mb-3">{{ workout.description }}</p>
+                {% endif %}
+              </div>
+              <span class="text-sm text-gray-400">{{ workout.created_at.strftime('%b %d, %Y') }}</span>
+            </div>
+            <div class="card-copy mb-4">
+              <span class="font-semibold text-white">Exercises:</span><br />
+              {% if workout.exercises %}
+              <ul class="list-disc list-inside text-gray-300 mt-2">
+                {% for exercise in workout.exercises %}
+                <li>{{ exercise.name }} <span class="text-gray-500">({{ exercise.target_muscle }})</span></li>
+                {% endfor %}
+              </ul>
+              {% elif workout.exercises_text %}
+              <span class="text-gray-300 whitespace-pre-line">{{ workout.exercises_text }}</span>
+              {% else %}
+              <span class="text-gray-500">No exercises selected</span>
+              {% endif %}
+            </div>
+
+            <form method="POST" action="/complete-workout" class="space-y-3">
+              <input type="hidden" name="workout_id" value="{{ workout.id }}" />
+              <textarea
+                name="notes"
+                class="input-field min-h-[100px]"
+                placeholder="Add a short completion note (optional)..."
+              ></textarea>
+              <button class="btn btn-primary w-full" type="submit">Complete Session</button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-20">
+          <p class="text-gray-300 mb-6">You don’t have any saved workouts yet.</p>
+          <a href="/create-workout" class="btn btn-primary">Create your first workout</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
