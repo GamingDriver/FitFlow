@@ -140,7 +140,7 @@ async def save_built_workout(
             title=title.strip(),
             description=description.strip(),
         )
-        new_workout.exercises = selected_exercises
+        new_workout.exercise_list = selected_exercises
         db.add(new_workout)
         db.commit()
         db.refresh(new_workout)

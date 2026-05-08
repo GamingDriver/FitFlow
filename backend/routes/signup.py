@@ -81,7 +81,37 @@ async def signup(
             status_code=400,
         )
 
-    if "@" not in email:
+    if email.count("@") != 1:
+        return templates.TemplateResponse(
+            "signup.html",
+            {"request": request, "error": "Invalid email format", "fullname": fullname, "email": email},
+            status_code=400,
+        )
+
+    local_part, domain_part = email.split("@", 1)
+    if not local_part or not local_part[0].isalpha():
+        return templates.TemplateResponse(
+            "signup.html",
+            {"request": request, "error": "Invalid email format", "fullname": fullname, "email": email},
+            status_code=400,
+        )
+
+    if any(c != "." and c != "_" and not c.isalnum() for c in local_part):
+        return templates.TemplateResponse(
+            "signup.html",
+            {"request": request, "error": "Invalid email format", "fullname": fullname, "email": email},
+            status_code=400,
+        )
+
+    if "." not in domain_part or domain_part.startswith(".") or domain_part.endswith("."):
+        return templates.TemplateResponse(
+            "signup.html",
+            {"request": request, "error": "Invalid email format", "fullname": fullname, "email": email},
+            status_code=400,
+        )
+
+    domain_name, extension = domain_part.rsplit(".", 1)
+    if not domain_name or not extension.isalpha() or len(extension) < 2:
         return templates.TemplateResponse(
             "signup.html",
             {"request": request, "error": "Invalid email format", "fullname": fullname, "email": email},

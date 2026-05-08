@@ -42,9 +42,9 @@
             </div>
             <div class="card-copy mb-4">
               <span class="font-semibold text-white">Exercises:</span><br />
-              {% if workout.exercises %}
+              {% if workout.exercise_list %}
               <ul class="list-disc list-inside text-gray-300 mt-2">
-                {% for exercise in workout.exercises %}
+                {% for exercise in workout.exercise_list %}
                 <li>{{ exercise.name }} <span class="text-gray-500">({{ exercise.target_muscle }})</span></li>
                 {% endfor %}
               </ul>

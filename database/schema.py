@@ -8,12 +8,12 @@ from database.models import User
 def create_all_tables():
     """Create all tables in the database"""
     Base.metadata.create_all(bind=engine)
-    print("✓ All tables created successfully")
+    print("All tables created successfully")
 
 def drop_all_tables():
     """Drop all tables (use with caution!)"""
     Base.metadata.drop_all(bind=engine)
-    print("✓ All tables dropped")
+    print("All tables dropped")
 
 if __name__ == "__main__":
     import sys

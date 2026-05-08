@@ -37,11 +37,12 @@ class Workout(Base):
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
+    exercises = Column(Text, nullable=True)  # Legacy column, now nullable
     exercises_text = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     user = relationship("User", back_populates="workouts")
-    exercises = relationship("Exercise", secondary=workout_exercise, backref="workouts")
+    exercise_list = relationship("Exercise", secondary=workout_exercise, backref="workouts")
 
     def __repr__(self):
         return f"<Workout(id={self.id}, title={self.title}, user_id={self.user_id})>"

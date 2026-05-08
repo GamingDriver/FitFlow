@@ -30,10 +30,10 @@ app.include_router(signup.router)
 app.include_router(dashboard.router)
 app.include_router(exercises.router)
 
-print("✓ All routers included successfully")
+print("All routers included successfully")
 
 init_database()
-print("✓ Database initialized")
+print("Database initialized")
 
 # Seed exercises if not already present
 def seed_exercises():
